@@ -6,23 +6,23 @@
 
 **它是"用代码把画画出来再让它动"的引擎，不是"把你的图变成动画"的风格迁移工具**；画面全部由 Canvas 程序化绘制，零 AI 模型、零付费 API，普通电脑就能跑。
 
-## 实测产出（3 段，v2 返工版）
+## 实测产出（3 段，最终版）
 
 | 文件 | 内容 | 画面来源 | 时长 | 大小 | 出片参数 |
 |---|---|---|---|---|---|
-| `assets/小舟变奏_01.gif` | 同一叶小舟 ×3 风格人生：水墨 → 莫奈 → 吉卜力 | 测试图局部（Vox 高亮框裁出）+ ImageGen 图生图变体 | 11.00s | 8.4MB | spec 1920×1080@30fps → 800px/10fps/112 色 GIF |
-| `assets/松亭变奏_01.gif` | 同一座松亭 ×3 风格人生：水墨 → 浮世绘 → 蒸汽波 | 同上（松亭框） | 11.00s | 7.7MB | 同上 |
-| `assets/Vox剪报_01.gif` | 整幅测试图入场 + 荧光笔扫过小舟/松亭两处 | 测试图整图 | 9.00s | 8.9MB | spec 1920×1080@30fps → 848px/10fps/128 色 GIF |
+| `assets/小舟变奏_01.gif` | 同一叶小舟三种风格变奏：水墨 → 莫奈 → 吉卜力 | 测试图局部（Vox 高亮框裁出）+ ImageGen 图生图变体 | 24.00s | 25.2MB | spec 1920×1080@30fps → 960px/12fps/192 色 GIF |
+| `assets/松亭变奏_01.gif` | 同一座松亭三种风格变奏：水墨 → 浮世绘 → 蒸汽波 | 同上（松亭框） | 24.00s | 24.2MB | 同上 |
+| `assets/Vox剪报_01.gif` | 整幅测试图入场 + 荧光笔扫过小舟/松亭两处 | 测试图整图 | 17.00s | 22.0MB | spec 1920×1080@30fps → 848px/10fps/128 色 GIF |
 
 素材链全部围绕同一张测试图 `assets/test_shanshui.png`（1536×1024，AI 生成水墨山水）：`crop_boat.png` / `crop_pine.png` 为 Vox 高亮框坐标的精确裁切，`boat_monet.png` / `boat_ghibli.png` / `pine_ukiyo.png` / `pine_vapor.png` 为 ImageGen 图生图的 4 张风格变体；spec 见 `specs/`。
 
-> **v1 存档**：第一版产出 `水墨写意_01.gif`（17_ink）和 `莫奈_01.gif`（28_monet）是引擎自绘的"少女+猫"场景，与测试图脱节，经反馈后按"AI 变体＋引擎动画"路线返工，两个文件保留在 `assets/v1_archive/` 供对比。
+> **v1 存档**：第一版产出 `水墨写意_01.gif`（17_ink）和 `莫奈_01.gif`（28_monet）是引擎自绘的"少女+猫"场景，与测试图脱节，后续按"AI 风格变体＋引擎动画"路线重做，两个文件保留在 `assets/v1_archive/` 供对比。
 
-## 关于"用一张测试图跑 3 种风格"的如实说明
+## 图片风格迁移的能力边界（实测结论）
 
 - 35 种艺术风格场景是**纯代码绘制**的（`scripts/engine/scenes/<id>.js`），引擎不接收外部图片做风格迁移——"喂一张山水画 → 输出梵高风格的山水动画"这条路径**不存在**。
 - 外部图片能进入的两条路：`y2_vox`（剪报拼贴，图片贴上桌面+红线+荧光笔）和 `y3_whiteboard`（白板揭线）。实测走了 `y2_vox`，图片作为素材被贴进画面。
-- 所以 3 段里只有 Vox 段真正"用"了测试图；水墨、莫奈两段是引擎自绘场景（选这两段是因为主题与山水最搭）。
+- 于是最终路线为：**风格变体交给生图模型（ImageGen 图生图），动起来交给引擎**——与上游 skill 自己主张的"人用 AI 生帧，代码负责合成"分工一致。
 
 ## 环境（全部免费，无付费墙）
 
@@ -37,7 +37,7 @@
 
 ## 渲染性能实测
 
-1920×1080 逐帧渲染：60fps 段 70 帧 ≈ 37s（**0.53 秒/帧**）；30fps 段 270 帧 ≈ 158s（0.59 秒/帧）。CPU 软渲，无 GPU 依赖。
+1920×1080 逐帧渲染：60fps 段 70 帧 ≈ 37s（**0.53 秒/帧**）；30fps 段 330 帧 ≈ 3.5 分钟（0.59 秒/帧）。CPU 软渲，无 GPU 依赖。
 
 ## 完整踩坑日志
 
@@ -58,10 +58,10 @@ uv run --with playwright python scripts/engine/render.py --film gallery --solo 1
 # JSON spec 驱动的参数化片段（图片路径相对 spec 文件）
 uv run --with playwright python scripts/engine/render.py --spec vox_shanshui.json --out vox.mp4
 
-# MP4 → GIF（体积控制三件套：scale + fps + max_colors）
-ffmpeg -i ink.mp4 -vf "setpts=2*PTS,fps=24,scale=960:-1:flags=lanczos,split[s0][s1];[s0]palettegen=stats_mode=diff:max_colors=160[p];[s1][p]paletteuse=dither=sierra2_4a" 水墨写意_01.gif
+# MP4 → GIF（体积/画质三件套：scale + fps + max_colors）
+ffmpeg -i vox.mp4 -vf "fps=12,scale=960:-1:flags=lanczos,split[s0][s1];[s0]palettegen=stats_mode=diff:max_colors=192[p];[s1][p]paletteuse=dither=sierra2_4a" out.gif
 ```
 
 ## 许可证提醒 ⚠️
 
-gallery 场景画面里有花叔的"少女+猫"角色形象。上游 README 许可证节写明：**该形象"只用于本 skill 的示范，不随 MIT 授权用于其他用途"**。本文仓库的 GIF 属实测记录；若要把含该形象的片段用于公众号等公开传播，需自行评估。`Vox剪报_01.gif` 用的是自产测试图，无此问题。
+gallery 场景画面里有花叔的"少女+猫"角色形象。上游 README 许可证节写明：**该形象"只用于本 skill 的示范，不随 MIT 授权用于其他用途"**。`assets/v1_archive/` 里的两段 GIF 含该形象，公开传播前请自行评估；`小舟变奏_01.gif`、`松亭变奏_01.gif`、`Vox剪报_01.gif` 三段画面均为自产素材，无此问题。
