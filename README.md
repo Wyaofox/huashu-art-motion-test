@@ -6,15 +6,17 @@
 
 **它是"用代码把画画出来再让它动"的引擎，不是"把你的图变成动画"的风格迁移工具**；画面全部由 Canvas 程序化绘制，零 AI 模型、零付费 API，普通电脑就能跑。
 
-## 实测产出（3 段）
+## 实测产出（3 段，v2 返工版）
 
-| 文件 | 风格 | 画面来源 | 时长 | 大小 | 出片参数 |
+| 文件 | 内容 | 画面来源 | 时长 | 大小 | 出片参数 |
 |---|---|---|---|---|---|
-| `assets/水墨写意_01.gif` | 水墨写意·八大山人（`17_ink`） | 代码绘制（gallery 段） | 2.33s | 5.5MB | 1080p@60fps 渲染 → 2× 慢放 → 960px/24fps GIF |
-| `assets/莫奈_01.gif` | 莫奈·睡莲（`28_monet`） | 代码绘制（gallery 段） | 2.34s | 6.9MB | 同上 → 900px/15fps/128 色 GIF |
-| `assets/Vox剪报_01.gif` | Vox 式拼贴（`y2_vox` 语法） | **实测测试图**（AI 生成水墨山水） | 9.00s | 8.9MB | spec 1920×1080@30fps 渲染 → 848px/10fps/128 色 GIF |
+| `assets/小舟变奏_01.gif` | 同一叶小舟 ×3 风格人生：水墨 → 莫奈 → 吉卜力 | 测试图局部（Vox 高亮框裁出）+ ImageGen 图生图变体 | 11.00s | 8.4MB | spec 1920×1080@30fps → 800px/10fps/112 色 GIF |
+| `assets/松亭变奏_01.gif` | 同一座松亭 ×3 风格人生：水墨 → 浮世绘 → 蒸汽波 | 同上（松亭框） | 11.00s | 7.7MB | 同上 |
+| `assets/Vox剪报_01.gif` | 整幅测试图入场 + 荧光笔扫过小舟/松亭两处 | 测试图整图 | 9.00s | 8.9MB | spec 1920×1080@30fps → 848px/10fps/128 色 GIF |
 
-测试图 `assets/test_shanshui.png`（1536×1024，AI 生成水墨山水）；Vox 段的 spec 见 `specs/vox_shanshui.json`。
+素材链全部围绕同一张测试图 `assets/test_shanshui.png`（1536×1024，AI 生成水墨山水）：`crop_boat.png` / `crop_pine.png` 为 Vox 高亮框坐标的精确裁切，`boat_monet.png` / `boat_ghibli.png` / `pine_ukiyo.png` / `pine_vapor.png` 为 ImageGen 图生图的 4 张风格变体；spec 见 `specs/`。
+
+> **v1 存档**：第一版产出 `水墨写意_01.gif`（17_ink）和 `莫奈_01.gif`（28_monet）是引擎自绘的"少女+猫"场景，与测试图脱节，经反馈后按"AI 变体＋引擎动画"路线返工，两个文件保留在 `assets/v1_archive/` 供对比。
 
 ## 关于"用一张测试图跑 3 种风格"的如实说明
 
