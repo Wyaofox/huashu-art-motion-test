@@ -1,0 +1,14 @@
+{
+  "grammar": "y2_vox",
+  "duration": 9,
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "cues": [
+    { "at": 0.2, "kind": "title", "text": "一张 AI 画的水墨山水" },
+    { "at": 2.4, "kind": "image", "image": "test_shanshui.png", "text": "测试图 · 水墨山水 1536x1024" },
+    { "at": 4.6, "kind": "highlight", "data": { "rect": [0.18, 0.36, 0.20, 0.20] } },
+    { "at": 6.6, "kind": "highlight", "data": { "rect": [0.52, 0.30, 0.35, 0.45] } },
+    { "at": 8.2, "kind": "point", "text": "静态的画，代码怎么让它动？" }
+  ]
+}
