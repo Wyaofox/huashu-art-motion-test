@@ -1,14 +1,14 @@
 {
   "grammar": "y2_vox",
-  "duration": 11,
+  "duration": 24,
   "fps": 30,
   "width": 1920,
   "height": 1080,
   "cues": [
-    { "at": 0.2, "kind": "title", "text": "同一座松亭的三种人生" },
-    { "at": 2.4, "kind": "image", "image": "crop_pine.png", "text": "原稿 · AI 水墨" },
-    { "at": 5.4, "kind": "image", "image": "pine_ukiyo.png", "text": "浮世绘 · 木刻" },
-    { "at": 8.4, "kind": "image", "image": "pine_vapor.png", "text": "蒸汽波 · 1984" },
-    { "at": 10.4, "kind": "point", "text": "画还是那幅画，时代换了三个" }
+    { "at": 0.3, "kind": "title", "text": "同一座松亭的三种人生" },
+    { "at": 5.0, "kind": "image", "image": "crop_pine.png", "text": "原稿 · AI 水墨" },
+    { "at": 10.5, "kind": "image", "image": "pine_ukiyo.png", "text": "浮世绘 · 木刻" },
+    { "at": 16.0, "kind": "image", "image": "pine_vapor.png", "text": "蒸汽波 · 1984" },
+    { "at": 20.0, "kind": "point", "text": "画还是那幅画，时代换了三个" }
   ]
 }
