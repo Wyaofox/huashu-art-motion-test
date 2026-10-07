@@ -48,7 +48,7 @@ ffmpeg 直转第一版全线超标（莫奈 20.3MB、Vox 18.5MB——点彩纹�
 
 1. ffmpeg 按 Vox 高亮框坐标精确裁切：`crop=307:205:276:369`（小舟）、`crop=538:461:799:307`（松亭）。
 2. ImageGen 图生图 ×4：小舟 → 莫奈印象派 / 吉卜力；松亭 → 浮世绘 / 蒸汽波。实测构图保持良好，风格转换彻底。
-3. 引擎 `y2_vox` 写两份 spec：`vox_boat.json`（原稿→莫奈→吉卜力）、`vox_pine.json`（原稿→浮世绘→蒸汽波），红线串联"同一画面的三种人生"。
+3. 引擎 `y2_vox` 写两份 spec：`boat_variants.json`（原稿→莫奈→吉卜力）、`pine_variants.json`（原稿→浮世绘→蒸汽波），红线串联"同一画面的三种人生"。
 4. 渲染 2×330 帧约 3.5 分钟/段；GIF 压缩后抽帧检查画质无退化。
 
 这个"AI 出帧＋代码动画"的分工正是上游 skill 自己主张的路线（references/10-角色.md），实测走通。
@@ -57,16 +57,11 @@ ffmpeg 直转第一版全线超标（莫奈 20.3MB、Vox 18.5MB——点彩纹�
 
 v2 版文字停留太短（结尾卡只停 0.6s，标题不到 2s，不可读）。三份 spec 全部放慢——标题停留 ~3s、每张图 ~5s、结尾卡 ~2.5s，重渲 720/720/510 帧。
 
-最终产物整理：
-
-- `壁纸/`：5 张 PNG（原稿 1536×1024＋四张 1024×1024 风格变体），原画质不压缩。
-- `视频/艺术动画实测_整体版.mp4`：65s，三段（整图剪报 17s → 小舟三变 24s → 松亭三变 24s）concat 无重编码拼接，1080p30 H.264。
-- `视频/单段/`：三个单段 MP4。
-- GIF 同步换 v3 慢节奏版（960px/12fps/192 色，22-25MB）。
+最终产物：3 段成片 GIF（本仓库 assets/gif/）＋本地高分包（5 张原画质 PNG 壁纸、65s 整体版 MP4 与 3 个单段 MP4，未入仓库——GIF 单文件 22-25MB，仓库以文件体积考虑仅存 GIF 与图片素材）。
 
 ## 遗留事项与上游反馈点
 
-- Gitee 镜像仓库已建：https://gitee.com/Wyaofox/huashu-art-motion-test （旧 token 失效，更换新 token 后创建成功）。
+- Gitee 镜像仓库已建：https://gitee.com/Wyaofox/huashu-art-motion-test （镜像仓库，与 GitHub 同步）。
 - 建议上游文档补充：① Windows 下 ffmpeg 的 PATH 设置说明；② 官方 CDN 不稳时可直接给 npmmirror 镜像方案；③ winget 安装 ffmpeg 的实际 exe 位置提示。
 
 ## 结果

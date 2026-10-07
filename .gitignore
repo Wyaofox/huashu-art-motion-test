@@ -1,0 +1,17 @@
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
