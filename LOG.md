@@ -56,5 +56,5 @@ ffmpeg 直转 v1 结果全线超标：
 
 ## 遗留事项
 
-- Gitee 仓库：凭据管理器里的旧 token 已失效（API 返回 401 Access token does not exist），需要新token 后创建。
+- ~~Gitee 仓库~~：已建（凭据管理器旧 token 失效 401，用户提供新 pat 后创建成功，https://gitee.com/Wyaofox/huashu-art-motion-test ）。
 - 上游可反馈点：winget/README 未提示 Windows 下 ffmpeg PATH 问题；官方 CDN 在国内网络不稳，可考虑文档里直接给 npmmirror 镜像方案。
